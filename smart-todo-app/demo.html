@@ -91,6 +91,7 @@
         <p>A modern, feature-rich task management application</p>
         <a href="index.html" class="demo-btn">Launch Application</a>
         <button onclick="loadDemoTasks()" class="demo-btn">Load Demo Tasks</button>
+        <button onclick="clearDemoData()" class="demo-btn" style="background: #ef4444;">Clear Demo Data</button>
     </div>
 
     <div class="quick-start">
@@ -109,47 +110,62 @@
         <div class="feature-card">
             <h3>📝 Task Management</h3>
             <p>Create, edit, delete, and complete tasks with rich details including descriptions, due dates, and priorities.</p>
+            <button class="demo-btn" onclick="testFeature('add')" style="font-size: 0.8rem; padding: 0.5rem;">Test Add</button>
+            <button class="demo-btn" onclick="testFeature('edit')" style="font-size: 0.8rem; padding: 0.5rem;">Test Edit</button>
+            <button class="demo-btn" onclick="testFeature('delete')" style="font-size: 0.8rem; padding: 0.5rem;">Test Delete</button>
         </div>
         
         <div class="feature-card">
             <h3>🔍 Smart Search</h3>
             <p>Real-time search and filtering by status, with multiple sorting options to organize your tasks.</p>
+            <button class="demo-btn" onclick="testFeature('search')" style="font-size: 0.8rem; padding: 0.5rem;">Test Search</button>
+            <button class="demo-btn" onclick="testFeature('filter')" style="font-size: 0.8rem; padding: 0.5rem;">Test Filter</button>
+            <button class="demo-btn" onclick="testFeature('sort')" style="font-size: 0.8rem; padding: 0.5rem;">Test Sort</button>
         </div>
         
         <div class="feature-card">
             <h3>📱 Responsive Design</h3>
             <p>Works perfectly on desktop, tablet, and mobile devices with touch-friendly interactions.</p>
+            <button class="demo-btn" onclick="alert('Resize your browser window to test responsive design!')" style="font-size: 0.8rem; padding: 0.5rem;">Test Responsive</button>
         </div>
         
         <div class="feature-card">
             <h3>🌙 Dark Mode</h3>
             <p>Toggle between light and dark themes with smooth animations and persistent preferences.</p>
+            <button class="demo-btn" onclick="testFeature('theme')" style="font-size: 0.8rem; padding: 0.5rem;">Test Theme</button>
         </div>
         
         <div class="feature-card">
             <h3>🎤 Voice Input</h3>
             <p>Use speech-to-text to quickly add tasks without typing (supported browsers only).</p>
+            <button class="demo-btn" onclick="testFeature('voice')" style="font-size: 0.8rem; padding: 0.5rem;">Test Voice</button>
         </div>
         
         <div class="feature-card">
             <h3>📊 Progress Tracking</h3>
             <p>Visual progress bar and daily streak counter to track your productivity over time.</p>
+            <button class="demo-btn" onclick="testFeature('complete')" style="font-size: 0.8rem; padding: 0.5rem;">Test Complete</button>
         </div>
         
         <div class="feature-card">
             <h3>💾 Data Export</h3>
             <p>Export your tasks to JSON format for backup or import them from previous exports.</p>
+            <button class="demo-btn" onclick="testFeature('export')" style="font-size: 0.8rem; padding: 0.5rem;">Test Export</button>
+            <button class="demo-btn" onclick="testFeature('import')" style="font-size: 0.8rem; padding: 0.5rem;">Test Import</button>
         </div>
         
         <div class="feature-card">
             <h3>🖨️ Print Support</h3>
             <p>Clean, print-optimized view of your tasks for offline reference or sharing.</p>
+            <button class="demo-btn" onclick="testFeature('print')" style="font-size: 0.8rem; padding: 0.5rem;">Test Print</button>
+            <button class="demo-btn" onclick="testFeature('drag')" style="font-size: 0.8rem; padding: 0.5rem;">Test Drag</button>
         </div>
     </div>
 
     <div style="text-align: center; margin: 2rem 0;">
         <h3>⌨️ Keyboard Shortcuts</h3>
         <p><strong>Ctrl/Cmd + N:</strong> New task | <strong>Ctrl/Cmd + F:</strong> Search | <strong>Ctrl/Cmd + E:</strong> Export | <strong>F1:</strong> Help</p>
+        <button class="demo-btn" onclick="testFeature('keyboard')" style="font-size: 0.9rem;">Test Keyboard Shortcuts</button>
     </div>
 
     <script>
@@ -204,14 +220,62 @@
                     completed: false,
                     dateCreated: new Date(Date.now() - 1200000).toISOString(), // 20 minutes ago
                     dateCompleted: null
+                },
+                {
+                    id: 'demo_' + Date.now() + '_6',
+                    title: 'Overdue task example',
+                    description: 'This task shows how overdue tasks are highlighted in red.',
+                    dueDate: new Date(Date.now() - 86400000).toISOString().slice(0, 16), // Yesterday
+                    priority: 'high',
+                    completed: false,
+                    dateCreated: new Date(Date.now() - 1800000).toISOString(), // 30 minutes ago
+                    dateCompleted: null
                 }
             ];
 
             // Save demo tasks to localStorage
             localStorage.setItem('smartTodoTasks', JSON.stringify(demoTasks));
             
-            // Show success message
-            alert('Demo tasks loaded! Click "Launch Application" to see them in action.');
+            // Set up a demo streak
+            localStorage.setItem('taskStreak', '5');
+            localStorage.setItem('lastStreakDate', new Date().toDateString());
+            
+            // Show success message and redirect
+            if (confirm('Demo tasks loaded! Click OK to launch the application with sample data, or Cancel to stay here.')) {
+                window.open('index.html', '_blank');
+            }
+        }
+
+        // Function to clear demo data
+        function clearDemoData() {
+            localStorage.removeItem('smartTodoTasks');
+            localStorage.removeItem('smartTodoPreferences');
+            localStorage.removeItem('taskStreak');
+            localStorage.removeItem('lastStreakDate');
+            localStorage.removeItem('theme');
+            alert('Demo data cleared! You can now start fresh.');
+        }
+
+        // Function to test specific features
+        function testFeature(feature) {
+            const features = {
+                'add': 'Add a new task using the form in the sidebar',
+                'edit': 'Click the edit (pencil) button on any task to modify it',
+                'delete': 'Click the delete (trash) button and confirm deletion',
+                'complete': 'Click the checkmark button to mark tasks as completed',
+                'search': 'Type in the search box to filter tasks by title or description',
+                'filter': 'Use the All/Pending/Completed filter buttons',
+                'sort': 'Change the sort order using the dropdown menu',
+                'theme': 'Click the moon/sun icon in the header to toggle themes',
+                'drag': 'Drag task cards up or down to reorder them',
+                'export': 'Click the Export button to download your tasks',
+                'import': 'Click Import to upload a previously exported file',
+                'print': 'Click Print for a printer-friendly view',
+                'voice': 'Click the Voice button to use speech-to-text (if supported)',
+                'keyboard': 'Try Ctrl+N (new task), Ctrl+F (search), F1 (help), ESC (close)'
+            };
+            
+            alert(`${feature.toUpperCase()} FEATURE:\n\n${features[feature] || 'Feature not found'}`);
         }
     </script>
 </body>

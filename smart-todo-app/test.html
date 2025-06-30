@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart To-Do List - Test All Features</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            line-height: 1.6;
+            color: #374151;
+        }
+        
+        .test-section {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #6366f1;
+        }
+        
+        .test-button {
+            background: #6366f1;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 0.5rem;
+            transition: background 0.2s;
+        }
+        
+        .test-button:hover {
+            background: #5855eb;
+        }
+        
+        .success {
+            color: #10b981;
+            font-weight: 600;
+        }
+        
+        .error {
+            color: #ef4444;
+            font-weight: 600;
+        }
+        
+        .test-results {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .launch-btn {
+            background: #10b981;
+            font-size: 1.25rem;
+            padding: 1rem 2rem;
+            margin: 2rem 0;
+        }
+        
+        .launch-btn:hover {
+            background: #059669;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Smart To-Do List - Feature Testing</h1>
+    <p>Use this page to test all features before using the main application.</p>
+    
+    <button class="test-button launch-btn" onclick="window.open('index.html', '_blank')">
+        🚀 Launch Main Application
+    </button>
+
+    <div class="test-section">
+        <h3>📋 Basic Functionality Tests</h3>
+        <button class="test-button" onclick="testLocalStorage()">Test localStorage</button>
+        <button class="test-button" onclick="testTaskOperations()">Test Task Operations</button>
+        <button class="test-button" onclick="testUIFunctions()">Test UI Functions</button>
+        <div class="test-results" id="basicResults"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>🎨 Theme & UI Tests</h3>
+        <button class="test-button" onclick="testThemeToggle()">Test Theme Toggle</button>
+        <button class="test-button" onclick="testResponsiveDesign()">Test Responsive Design</button>
+        <button class="test-button" onclick="testAnimations()">Test Animations</button>
+        <div class="test-results" id="themeResults"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>🔍 Search & Filter Tests</h3>
+        <button class="test-button" onclick="testSearchFunction()">Test Search</button>
+        <button class="test-button" onclick="testFilterFunction()">Test Filters</button>
+        <button class="test-button" onclick="testSortFunction()">Test Sorting</button>
+        <div class="test-results" id="searchResults"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>💾 Data Operations Tests</h3>
+        <button class="test-button" onclick="testExportImport()">Test Export/Import</button>
+        <button class="test-button" onclick="testDataPersistence()">Test Data Persistence</button>
+        <button class="test-button" onclick="testUndoFunction()">Test Undo Function</button>
+        <div class="test-results" id="dataResults"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>⌨️ Interaction Tests</h3>
+        <button class="test-button" onclick="testKeyboardShortcuts()">Test Keyboard Shortcuts</button>
+        <button class="test-button" onclick="testModalFunctions()">Test Modal Functions</button>
+        <button class="test-button" onclick="testDragDrop()">Test Drag & Drop</button>
+        <div class="test-results" id="interactionResults"></div>
+    </div>
+
+    <div class="test-section">
+        <h3>🎯 Quick Manual Tests</h3>
+        <p><strong>Follow these steps in the main application:</strong></p>
+        <ol>
+            <li>Add a new task with title "Test Task 1" and high priority</li>
+            <li>Add another task "Test Task 2" with a due date</li>
+            <li>Mark the first task as complete</li>
+            <li>Edit the second task</li>
+            <li>Try searching for "Test"</li>
+            <li>Filter by "Completed" tasks</li>
+            <li>Try dragging tasks to reorder them</li>
+            <li>Toggle between light and dark themes</li>
+            <li>Export your tasks</li>
+            <li>Delete a task and use undo</li>
+        </ol>
+        <button class="test-button launch-btn" onclick="window.open('index.html', '_blank')">
+            🚀 Start Manual Testing
+        </button>
+    </div>
+
+    <script>
+        function logResult(containerId, message, isSuccess = true) {
+            const container = document.getElementById(containerId);
+            const div = document.createElement('div');
+            div.className = isSuccess ? 'success' : 'error';
+            div.textContent = `${isSuccess ? '✅' : '❌'} ${message}`;
+            container.appendChild(div);
+        }
+
+        function clearResults(containerId) {
+            document.getElementById(containerId).innerHTML = '';
+        }
+
+        function testLocalStorage() {
+            clearResults('basicResults');
+            
+            try {
+                // Test localStorage availability
+                localStorage.setItem('test', 'test');
+                localStorage.removeItem('test');
+                logResult('basicResults', 'localStorage is available and working');
+                
+                // Test JSON operations
+                const testData = {tasks: [{id: 1, title: 'Test', completed: false}]};
+                localStorage.setItem('smartTodoTest', JSON.stringify(testData));
+                const retrieved = JSON.parse(localStorage.getItem('smartTodoTest'));
+                localStorage.removeItem('smartTodoTest');
+                
+                if (retrieved.tasks[0].title === 'Test') {
+                    logResult('basicResults', 'JSON serialization/deserialization works');
+                } else {
+                    logResult('basicResults', 'JSON operations failed', false);
+                }
+                
+            } catch (error) {
+                logResult('basicResults', `localStorage test failed: ${error.message}`, false);
+            }
+        }
+
+        function testTaskOperations() {
+            clearResults('basicResults');
+            
+            // These tests check if the main application functions exist
+            const testWindow = window.open('index.html', 'testWindow');
+            
+            setTimeout(() => {
+                try {
+                    if (testWindow.app) {
+                        logResult('basicResults', 'Main application loads successfully');
+                        
+                        if (typeof testWindow.app.addTask === 'function') {
+                            logResult('basicResults', 'addTask function exists');
+                        }
+                        
+                        if (typeof testWindow.app.editTask === 'function') {
+                            logResult('basicResults', 'editTask function exists');
+                        }
+                        
+                        if (typeof testWindow.app.deleteTask === 'function') {
+                            logResult('basicResults', 'deleteTask function exists');
+                        }
+                        
+                        if (typeof testWindow.app.toggleTaskComplete === 'function') {
+                            logResult('basicResults', 'toggleTaskComplete function exists');
+                        }
+                        
+                    } else {
+                        logResult('basicResults', 'Application not loaded properly', false);
+                    }
+                    
+                    testWindow.close();
+                } catch (error) {
+                    logResult('basicResults', `Task operations test failed: ${error.message}`, false);
+                    testWindow.close();
+                }
+            }, 2000);
+        }
+
+        function testUIFunctions() {
+            clearResults('basicResults');
+            
+            const testWindow = window.open('index.html', 'testWindow');
+            
+            setTimeout(() => {
+                try {
+                    const doc = testWindow.document;
+                    
+                    // Check for required elements
+                    const requiredElements = [
+                        'addTaskForm', 'searchInput', 'sortSelect', 
+                        'tasksContainer', 'progressFill', 'streakCount'
+                    ];
+                    
+                    let allElementsFound = true;
+                    requiredElements.forEach(id => {
+                        if (doc.getElementById(id)) {
+                            logResult('basicResults', `Element ${id} found`);
+                        } else {
+                            logResult('basicResults', `Element ${id} missing`, false);
+                            allElementsFound = false;
+                        }
+                    });
+                    
+                    if (allElementsFound) {
+                        logResult('basicResults', 'All required UI elements present');
+                    }
+                    
+                    testWindow.close();
+                } catch (error) {
+                    logResult('basicResults', `UI test failed: ${error.message}`, false);
+                    testWindow.close();
+                }
+            }, 2000);
+        }
+
+        function testThemeToggle() {
+            clearResults('themeResults');
+            logResult('themeResults', 'Theme toggle test - check main app manually');
+        }
+
+        function testResponsiveDesign() {
+            clearResults('themeResults');
+            logResult('themeResults', 'Responsive design test - resize browser window to test');
+        }
+
+        function testAnimations() {
+            clearResults('themeResults');
+            logResult('themeResults', 'Animation test - check CSS transitions in main app');
+        }
+
+        function testSearchFunction() {
+            clearResults('searchResults');
+            logResult('searchResults', 'Search function test - add tasks and search in main app');
+        }
+
+        function testFilterFunction() {
+            clearResults('searchResults');
+            logResult('searchResults', 'Filter function test - use filter buttons in main app');
+        }
+
+        function testSortFunction() {
+            clearResults('searchResults');
+            logResult('searchResults', 'Sort function test - use sort dropdown in main app');
+        }
+
+        function testExportImport() {
+            clearResults('dataResults');
+            logResult('dataResults', 'Export/Import test - use export/import buttons in main app');
+        }
+
+        function testDataPersistence() {
+            clearResults('dataResults');
+            logResult('dataResults', 'Data persistence test - add tasks, reload page, check if tasks remain');
+        }
+
+        function testUndoFunction() {
+            clearResults('dataResults');
+            logResult('dataResults', 'Undo function test - delete a task and click undo in toast');
+        }
+
+        function testKeyboardShortcuts() {
+            clearResults('interactionResults');
+            logResult('interactionResults', 'Keyboard shortcuts test - try Ctrl+N, Ctrl+F, F1, ESC in main app');
+        }
+
+        function testModalFunctions() {
+            clearResults('interactionResults');
+            logResult('interactionResults', 'Modal functions test - try edit task, delete task, clear all in main app');
+        }
+
+        function testDragDrop() {
+            clearResults('interactionResults');
+            logResult('interactionResults', 'Drag & drop test - add multiple tasks and drag to reorder in main app');
+        }
+
+        // Auto-run basic tests on page load
+        setTimeout(() => {
+            testLocalStorage();
+        }, 1000);
+    </script>
+</body>
+</html>

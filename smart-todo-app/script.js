@@ -11,6 +11,7 @@ class SmartTodoApp {
         this.undoTimeout = null;
         this.lastDeletedTask = null;
         this.draggedTask = null;
+        this.confirmCallback = null;
         
         this.init();
     }
@@ -20,6 +21,7 @@ class SmartTodoApp {
         this.loadFromStorage();
         this.bindEvents();
         this.updateUI();
+        this.updateStreak();
         this.initSpeechRecognition();
         this.checkDueDateReminders();
         
@@ -38,6 +40,7 @@ class SmartTodoApp {
         document.getElementById('searchInput').addEventListener('input', (e) => {
             this.searchQuery = e.target.value.toLowerCase();
             this.updateUI();
+            this.savePreferences();
         });
 
         // Filter buttons
@@ -51,6 +54,7 @@ class SmartTodoApp {
         document.getElementById('sortSelect').addEventListener('change', (e) => {
             this.currentSort = e.target.value;
             this.updateUI();
+            this.savePreferences();
         });
 
         // Theme toggle
@@ -80,24 +84,46 @@ class SmartTodoApp {
         document.addEventListener('keydown', (e) => this.handleKeyboardShortcuts(e));
 
         // Auto-focus on task title when page loads
-        document.getElementById('taskTitle').focus();
+        setTimeout(() => {
+            const titleInput = document.getElementById('taskTitle');
+            if (titleInput) titleInput.focus();
+        }, 100);
     }
 
     bindModalEvents() {
         // Edit modal
-        document.querySelector('#editModal .modal-close').addEventListener('click', () => this.closeEditModal());
-        document.getElementById('cancelEdit').addEventListener('click', () => this.closeEditModal());
-        document.getElementById('saveEdit').addEventListener('click', () => this.saveEditedTask());
+        const editModal = document.getElementById('editModal');
+        const editModalClose = editModal.querySelector('.modal-close');
+        const cancelEdit = document.getElementById('cancelEdit');
+        const saveEdit = document.getElementById('saveEdit');
+
+        editModalClose.addEventListener('click', () => this.closeEditModal());
+        cancelEdit.addEventListener('click', () => this.closeEditModal());
+        saveEdit.addEventListener('click', () => this.saveEditedTask());
 
         // Confirm modal
-        document.querySelector('#confirmModal .modal-close').addEventListener('click', () => this.closeConfirmModal());
-        document.getElementById('confirmCancel').addEventListener('click', () => this.closeConfirmModal());
+        const confirmModal = document.getElementById('confirmModal');
+        const confirmModalClose = confirmModal.querySelector('.modal-close');
+        const confirmCancel = document.getElementById('confirmCancel');
+        const confirmOk = document.getElementById('confirmOk');
+
+        if (confirmModalClose) {
+            confirmModalClose.addEventListener('click', () => this.closeConfirmModal());
+        }
+        confirmCancel.addEventListener('click', () => this.closeConfirmModal());
+        confirmOk.addEventListener('click', () => {
+            if (this.confirmCallback) {
+                this.confirmCallback();
+                this.confirmCallback = null;
+            }
+            this.closeConfirmModal();
+        });
 
         // Close modals on overlay click
-        document.getElementById('editModal').addEventListener('click', (e) => {
+        editModal.addEventListener('click', (e) => {
             if (e.target === e.currentTarget) this.closeEditModal();
         });
-        document.getElementById('confirmModal').addEventListener('click', (e) => {
+        confirmModal.addEventListener('click', (e) => {
             if (e.target === e.currentTarget) this.closeConfirmModal();
         });
 
@@ -752,17 +778,11 @@ class SmartTodoApp {
         modal.classList.add('active');
         modal.setAttribute('aria-hidden', 'false');
         
-        // Set up confirm handler
-        const confirmBtn = document.getElementById('confirmOk');
-        const newConfirmBtn = confirmBtn.cloneNode(true);
-        confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+        // Store the callback for the OK button
+        this.confirmCallback = onConfirm;
         
-        newConfirmBtn.addEventListener('click', () => {
-            onConfirm();
-            this.closeConfirmModal();
-        });
-        
-        newConfirmBtn.focus();
+        // Focus the confirm button
+        document.getElementById('confirmOk').focus();
     }
 
     closeConfirmModal() {
@@ -903,7 +923,12 @@ Keyboard Shortcuts:
     loadFromStorage() {
         const saved = localStorage.getItem('smartTodoTasks');
         if (saved) {
-            this.tasks = JSON.parse(saved);
+            try {
+                this.tasks = JSON.parse(saved);
+            } catch (error) {
+                console.error('Error loading tasks from storage:', error);
+                this.tasks = [];
+            }
         }
         
         this.loadPreferences();
