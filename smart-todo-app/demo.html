@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart To-Do List - Demo Setup</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            line-height: 1.6;
+            color: #374151;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .demo-btn {
+            background: #6366f1;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background 0.2s;
+            text-decoration: none;
+            display: inline-block;
+            margin: 0.5rem;
+        }
+        
+        .demo-btn:hover {
+            background: #5855eb;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .feature-card {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .feature-card h3 {
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+        
+        .feature-card p {
+            color: #64748b;
+            margin: 0;
+        }
+        
+        .quick-start {
+            background: #eff6ff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #6366f1;
+            margin: 2rem 0;
+        }
+        
+        .quick-start h3 {
+            color: #1e40af;
+            margin-bottom: 1rem;
+        }
+        
+        .quick-start ol {
+            color: #374151;
+            padding-left: 1.5rem;
+        }
+        
+        .quick-start li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚀 Smart To-Do List</h1>
+        <p>A modern, feature-rich task management application</p>
+        <a href="index.html" class="demo-btn">Launch Application</a>
+        <button onclick="loadDemoTasks()" class="demo-btn">Load Demo Tasks</button>
+    </div>
+
+    <div class="quick-start">
+        <h3>🎯 Quick Start Guide</h3>
+        <ol>
+            <li><strong>Add your first task:</strong> Use the form in the sidebar to create a new task</li>
+            <li><strong>Set due dates:</strong> Click on the date field to set when tasks are due</li>
+            <li><strong>Organize with priority:</strong> Choose High, Medium, or Low priority levels</li>
+            <li><strong>Search and filter:</strong> Use the search box and filter buttons to find tasks</li>
+            <li><strong>Drag to reorder:</strong> Drag task cards to reorder them</li>
+            <li><strong>Toggle theme:</strong> Click the moon/sun icon to switch between light and dark themes</li>
+        </ol>
+    </div>
+
+    <div class="feature-grid">
+        <div class="feature-card">
+            <h3>📝 Task Management</h3>
+            <p>Create, edit, delete, and complete tasks with rich details including descriptions, due dates, and priorities.</p>
+        </div>
+        
+        <div class="feature-card">
+            <h3>🔍 Smart Search</h3>
+            <p>Real-time search and filtering by status, with multiple sorting options to organize your tasks.</p>
+        </div>
+        
+        <div class="feature-card">
+            <h3>📱 Responsive Design</h3>
+            <p>Works perfectly on desktop, tablet, and mobile devices with touch-friendly interactions.</p>
+        </div>
+        
+        <div class="feature-card">
+            <h3>🌙 Dark Mode</h3>
+            <p>Toggle between light and dark themes with smooth animations and persistent preferences.</p>
+        </div>
+        
+        <div class="feature-card">
+            <h3>🎤 Voice Input</h3>
+            <p>Use speech-to-text to quickly add tasks without typing (supported browsers only).</p>
+        </div>
+        
+        <div class="feature-card">
+            <h3>📊 Progress Tracking</h3>
+            <p>Visual progress bar and daily streak counter to track your productivity over time.</p>
+        </div>
+        
+        <div class="feature-card">
+            <h3>💾 Data Export</h3>
+            <p>Export your tasks to JSON format for backup or import them from previous exports.</p>
+        </div>
+        
+        <div class="feature-card">
+            <h3>🖨️ Print Support</h3>
+            <p>Clean, print-optimized view of your tasks for offline reference or sharing.</p>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin: 2rem 0;">
+        <h3>⌨️ Keyboard Shortcuts</h3>
+        <p><strong>Ctrl/Cmd + N:</strong> New task | <strong>Ctrl/Cmd + F:</strong> Search | <strong>Ctrl/Cmd + E:</strong> Export | <strong>F1:</strong> Help</p>
+    </div>
+
+    <script>
+        function loadDemoTasks() {
+            const demoTasks = [
+                {
+                    id: 'demo_' + Date.now() + '_1',
+                    title: 'Welcome to Smart To-Do! 🎉',
+                    description: 'This is a sample task to get you started. You can edit or delete this task at any time.',
+                    dueDate: new Date(Date.now() + 86400000).toISOString().slice(0, 16), // Tomorrow
+                    priority: 'high',
+                    completed: false,
+                    dateCreated: new Date().toISOString(),
+                    dateCompleted: null
+                },
+                {
+                    id: 'demo_' + Date.now() + '_2',
+                    title: 'Try the search feature',
+                    description: 'Use the search box in the sidebar to quickly find tasks by title or description.',
+                    dueDate: '',
+                    priority: 'medium',
+                    completed: false,
+                    dateCreated: new Date(Date.now() - 300000).toISOString(), // 5 minutes ago
+                    dateCompleted: null
+                },
+                {
+                    id: 'demo_' + Date.now() + '_3',
+                    title: 'Explore the dark theme',
+                    description: 'Click the moon icon in the header to switch to dark mode for a comfortable viewing experience.',
+                    dueDate: '',
+                    priority: 'low',
+                    completed: true,
+                    dateCreated: new Date(Date.now() - 600000).toISOString(), // 10 minutes ago
+                    dateCompleted: new Date(Date.now() - 60000).toISOString() // 1 minute ago
+                },
+                {
+                    id: 'demo_' + Date.now() + '_4',
+                    title: 'Test drag and drop',
+                    description: 'You can reorder tasks by dragging them up or down in the list.',
+                    dueDate: new Date(Date.now() + 2 * 3600000).toISOString().slice(0, 16), // 2 hours from now
+                    priority: 'high',
+                    completed: false,
+                    dateCreated: new Date(Date.now() - 900000).toISOString(), // 15 minutes ago
+                    dateCompleted: null
+                },
+                {
+                    id: 'demo_' + Date.now() + '_5',
+                    title: 'Export your tasks',
+                    description: 'Use the Export button to download a backup of all your tasks in JSON format.',
+                    dueDate: '',
+                    priority: 'medium',
+                    completed: false,
+                    dateCreated: new Date(Date.now() - 1200000).toISOString(), // 20 minutes ago
+                    dateCompleted: null
+                }
+            ];
+
+            // Save demo tasks to localStorage
+            localStorage.setItem('smartTodoTasks', JSON.stringify(demoTasks));
+            
+            // Show success message
+            alert('Demo tasks loaded! Click "Launch Application" to see them in action.');
+        }
+    </script>
+</body>
+</html>

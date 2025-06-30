@@ -1,0 +1,345 @@
+/* ===== PRINT STYLES ===== */
+/* Print-friendly styles for Smart To-Do List */
+
+@media print {
+    /* Reset and basic styles */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* Hide non-essential elements */
+    .header-controls,
+    .menu-toggle,
+    .theme-toggle,
+    .sidebar,
+    .task-actions,
+    .toast-container,
+    .modal-overlay,
+    .progress-section {
+        display: none !important;
+    }
+
+    /* Page setup */
+    @page {
+        margin: 0.5in;
+        size: letter;
+    }
+
+    body {
+        font-family: 'Times New Roman', serif;
+        font-size: 12pt;
+        line-height: 1.4;
+        color: #000 !important;
+        background: #fff !important;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Header adjustments */
+    .header {
+        background: #fff !important;
+        border-bottom: 2px solid #000 !important;
+        box-shadow: none !important;
+        position: static !important;
+        page-break-after: avoid;
+    }
+
+    .header-container {
+        padding: 10pt 0;
+        max-width: none;
+        margin: 0;
+    }
+
+    .app-title {
+        font-size: 20pt;
+        font-weight: bold;
+        color: #000 !important;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .title-icon {
+        background: #000 !important;
+        color: #fff !important;
+        width: 24pt;
+        height: 24pt;
+        font-size: 14pt;
+    }
+
+    /* Main content layout */
+    .main-content {
+        display: block !important;
+        grid-template-columns: none !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 20pt 0 !important;
+        gap: 0 !important;
+    }
+
+    /* Tasks section */
+    .tasks-section {
+        background: #fff !important;
+        border: none !important;
+        border-radius: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+    }
+
+    .tasks-header {
+        border-bottom: 1px solid #000 !important;
+        margin-bottom: 15pt;
+        padding-bottom: 10pt;
+    }
+
+    .tasks-header h2 {
+        font-size: 16pt;
+        font-weight: bold;
+        color: #000 !important;
+        margin: 0;
+    }
+
+    .tasks-count {
+        color: #666 !important;
+        font-size: 10pt;
+    }
+
+    /* Task cards for print */
+    .task-card {
+        background: #fff !important;
+        border: 1px solid #ccc !important;
+        border-radius: 0 !important;
+        padding: 10pt !important;
+        margin-bottom: 10pt !important;
+        box-shadow: none !important;
+        page-break-inside: avoid;
+        transform: none !important;
+    }
+
+    .task-card:hover {
+        transform: none !important;
+        box-shadow: none !important;
+    }
+
+    .task-card.completed {
+        opacity: 0.7 !important;
+        background: #f8f8f8 !important;
+    }
+
+    .task-card.overdue {
+        border-left: 4pt solid #000 !important;
+    }
+
+    .task-card.due-today {
+        border-left: 4pt solid #666 !important;
+    }
+
+    .task-card.high-priority {
+        border-left: 4pt solid #000 !important;
+    }
+
+    .task-card.medium-priority {
+        border-left: 4pt solid #666 !important;
+    }
+
+    .task-card.low-priority {
+        border-left: 4pt solid #999 !important;
+    }
+
+    /* Task content */
+    .task-header {
+        display: block !important;
+        margin-bottom: 5pt;
+    }
+
+    .task-title {
+        font-size: 12pt;
+        font-weight: bold;
+        color: #000 !important;
+        margin: 0 0 5pt 0 !important;
+    }
+
+    .task-card.completed .task-title {
+        text-decoration: line-through !important;
+        color: #666 !important;
+    }
+
+    .task-description {
+        font-size: 10pt;
+        color: #333 !important;
+        margin: 5pt 0 !important;
+        line-height: 1.3;
+    }
+
+    .task-meta {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        font-size: 9pt;
+        color: #666 !important;
+        margin-top: 5pt;
+        border-top: 1px solid #eee !important;
+        padding-top: 5pt;
+    }
+
+    .task-due-date {
+        font-weight: normal;
+    }
+
+    .task-due-date.overdue {
+        color: #000 !important;
+        font-weight: bold !important;
+    }
+
+    .task-due-date.due-today {
+        color: #333 !important;
+        font-weight: bold !important;
+    }
+
+    .task-priority {
+        background: #f0f0f0 !important;
+        color: #000 !important;
+        padding: 2pt 4pt !important;
+        border: 1px solid #ccc !important;
+        border-radius: 0 !important;
+        font-size: 8pt;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    .task-priority.high {
+        background: #000 !important;
+        color: #fff !important;
+    }
+
+    .task-priority.medium {
+        background: #666 !important;
+        color: #fff !important;
+    }
+
+    .task-priority.low {
+        background: #ccc !important;
+        color: #000 !important;
+    }
+
+    /* Empty state for print */
+    .empty-state {
+        text-align: center;
+        padding: 40pt;
+        color: #666 !important;
+    }
+
+    .empty-icon {
+        font-size: 24pt;
+        margin-bottom: 10pt;
+    }
+
+    .empty-state h3 {
+        color: #333 !important;
+        font-size: 14pt;
+        margin-bottom: 5pt;
+    }
+
+    .empty-state p {
+        color: #666 !important;
+        font-size: 10pt;
+    }
+
+    /* Print-specific content */
+    .print-info {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 8pt;
+        color: #666 !important;
+        border-top: 1px solid #ccc !important;
+        padding: 5pt;
+        background: #fff !important;
+    }
+
+    /* Add print timestamp */
+    .tasks-header::after {
+        content: "Printed on " attr(data-print-date);
+        display: block;
+        font-size: 9pt;
+        color: #666 !important;
+        margin-top: 5pt;
+        font-weight: normal;
+    }
+
+    /* Page breaks */
+    h1, h2, h3 {
+        page-break-after: avoid;
+    }
+
+    .task-card {
+        page-break-inside: avoid;
+        page-break-after: auto;
+    }
+
+    /* Ensure proper spacing */
+    .task-card:last-child {
+        margin-bottom: 0 !important;
+    }
+
+    /* Hide any remaining interactive elements */
+    button,
+    input,
+    select,
+    textarea,
+    .btn,
+    .filter-btn,
+    .task-action-btn {
+        display: none !important;
+    }
+
+    /* Typography improvements for print */
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Times New Roman', serif;
+        color: #000 !important;
+    }
+
+    p, div, span {
+        font-family: 'Times New Roman', serif;
+    }
+
+    /* Ensure contrast for print */
+    .text-muted,
+    .text-secondary {
+        color: #666 !important;
+    }
+
+    /* Remove any remaining backgrounds */
+    .bg-primary,
+    .bg-secondary,
+    .bg-tertiary,
+    .bg-card {
+        background: #fff !important;
+    }
+
+    /* Remove shadows and effects */
+    * {
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+}
+
+/* Print button styles (visible on screen only) */
+@media screen {
+    .print-only {
+        display: none;
+    }
+}
+
+@media print {
+    .print-only {
+        display: block;
+    }
+    
+    .screen-only {
+        display: none !important;
+    }
+}
